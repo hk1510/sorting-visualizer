@@ -84,13 +84,11 @@ button {
   margin: 5px;
 }
 
-a,
-.navbar-nav,
-.navbar-light .nav-link {
+.navbar-dark .nav-link {
   color: #f9c80e !important;
 }
 
-.navbar-light .nav-link:hover {
+.navbar-dark .nav-link:hover {
   color: #c60f7b !important;
 }
 
