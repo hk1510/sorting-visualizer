@@ -17,13 +17,11 @@ body {
 
 html {
   box-sizing: border-box;
-  overflow-y: hidden;
 }
 
 html body {
   padding: 0;
   margin: 0;
-  overflow-y: inherit;
 }
 
 .title {
@@ -180,6 +178,7 @@ button:focus {
   .wrapper {
     margin-top: 0;
     margin-bottom: 5vh;
+    width: 85vw;
   }
   .app {
     width: 100vw;
@@ -189,5 +188,26 @@ button:focus {
   }
   .slider-bar {
     width: 50vw !important;
+  }
+}
+
+@media only screen and (max-width: 340px) {
+  /* For mobile phones: */
+  .title {
+    margin-top: 20px;
+    color: #f9c80e;
+    font-size: 1.3rem;
+  }
+  .navbar-brand {
+    font-size: 0.9rem !important;
+  }
+  button:hover {
+    background-color: #f9c80e;
+  }
+  .info {
+    font-size: 0.9rem;
+  }
+  .slider-bar {
+    width: 70vw !important;
   }
 }

@@ -8,6 +8,8 @@ export const MenuBar = () => (
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
         <Nav.Item><Link className='nav-link sort-elem' to="/">Bubble Sort</Link></Nav.Item>
+        <Nav.Item><Link className='nav-link sort-elem' to="/insertion-sort">Insertion Sort</Link></Nav.Item>
+        <Nav.Item><Link className='nav-link sort-elem' to="/selection-sort">Selection Sort</Link></Nav.Item>
         <Nav.Item><Link className='nav-link sort-elem' to="/merge-sort">Merge Sort</Link></Nav.Item>
         <Nav.Item><Link className='nav-link sort-elem' to="/quick-sort">Quick Sort</Link></Nav.Item>
         <Nav.Item><Link className='nav-link sort-elem' to="/heap-sort">Heap Sort</Link></Nav.Item>

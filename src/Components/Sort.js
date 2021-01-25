@@ -28,8 +28,8 @@ function Sort({context, sortingAlgorithm, name}) {
                     );
                 })}
                 <div className='infoWrapper'>
-                    <p className='info'>No. of Elements: {array.length};</p>
-                    <p className='info'> Comparisons: <span id='comparisons'>0</span>;</p>
+                    <p className='info'>number_of_elements: {array.length};</p>
+                    <p className='info'> comparisons: <span id='comparisons'>0</span>;</p>
                     <RangeSlider tooltip='off' variant={variant} className='slider-bar sort-elem' value={elems} min={7} max={maxElems} onChange={(e) => {
                         setElems(parseInt(e.target.value));
                         setWidth((((0.74 * windowWidth)/((parseInt(e.target.value)) + 1.0)) - 10));

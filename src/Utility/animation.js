@@ -83,6 +83,16 @@ export const finalize = (index, time, interval) => {
     }, time * interval);
 }
 
+export const setColor = (index, time, interval, color) => {
+    const elems = document.getElementsByClassName('element');
+    setTimeout(() => {
+        elems[index].style.backgroundColor = color;
+    }, time * interval);
+    setTimeout(() => {
+        elems[index].style.backgroundColor = '#87a9ab';
+    }, (time + 1) * interval);
+}
+
 export const finish = (time, interval) => {
     const elems = document.getElementsByClassName('element');
     setTimeout(() => {

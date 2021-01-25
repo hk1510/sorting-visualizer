@@ -1,4 +1,4 @@
-import { compare, modifyValue, swap, coloredSwap, setComparisons, finalize, finish } from './animation';
+import { compare, modifyValue, swap, setColor, coloredSwap, setComparisons, finalize, finish } from './animation';
 
 const copy = (l) => {
   let newL = [];
@@ -43,7 +43,7 @@ export const bubbleSort = (array, interval) => {
 }
 
 
-const merge = (array, auxArray, start, mid, end, time, interval, comparisons) => {
+const merge = (array, auxArray, start, mid, end, time, interval, comparisons, first) => {
 
   for (let k = start; k <= end; k++) {
     auxArray[k] = array[k];
@@ -58,35 +58,59 @@ const merge = (array, auxArray, start, mid, end, time, interval, comparisons) =>
       compare([i, j], true, ++time, interval);
       time++;
       modifyValue(k, auxArray[i], ++time, interval);
+      if (first) {
+        time++;
+        for (let l = 0; l <= k; l++) {
+          finalize(l, time, interval);
+        }
+      }
       array[k++] = auxArray[i++];
     }
     else {
       compare([i, j], false, ++time, interval);
       time++;
       modifyValue(k, auxArray[j], ++time, interval);
+      if (first) {
+        time++;
+        for (let l = 0; l <= k; l++) {
+          finalize(l, time, interval);
+        }
+      }
       array[k++] = auxArray[j++];
     }
   }
   while(i <= mid) {
     modifyValue(k, auxArray[i], ++time, interval);
+    if (first) {
+      time++;
+      for (let l = 0; l <= k; l++) {
+        finalize(l, time, interval);
+      }
+    }
     array[k++] = auxArray[i++];
   }
   while(j <= end) {
     modifyValue(k, auxArray[j], ++time, interval);
+    if (first) {
+      time++;
+      for (let l = 0; l <= k; l++) {
+        finalize(l, time, interval);
+      }
+    }
     array[k++] = auxArray[j++];
   }
   return {time, comparisons};
 }
 
 
-const mergeSortHelper = (array, auxArray, interval, start, end, time, comparisons) => {
+const mergeSortHelper = (array, auxArray, interval, start, end, time, comparisons, first) => {
   if (start === end) {
     return {time, comparisons};
   }
   let mid = Math.floor((start + end)/2);
-  let firstResult = mergeSortHelper(array, auxArray, interval, start, mid, time, comparisons);
-  let secondResult = mergeSortHelper(array, auxArray, interval, mid + 1, end, firstResult.time, firstResult.comparisons);
-  let finalResult = merge(array, auxArray, start, mid, end, secondResult.time, interval, secondResult.comparisons);
+  let firstResult = mergeSortHelper(array, auxArray, interval, start, mid, time, comparisons, false);
+  let secondResult = mergeSortHelper(array, auxArray, interval, mid + 1, end, firstResult.time, firstResult.comparisons, false);
+  let finalResult = merge(array, auxArray, start, mid, end, secondResult.time, interval, secondResult.comparisons, first);
   time = finalResult.time;
   comparisons = finalResult.comparisons;
   return {time, comparisons};
@@ -97,7 +121,7 @@ export const mergeSort = (array, interval) => {
   let comparisons = 0;
   let newArr = array.slice();
   let auxArray = array.slice();
-  let result = mergeSortHelper(newArr, auxArray, interval, 0, array.length - 1, 0, comparisons);
+  let result = mergeSortHelper(newArr, auxArray, interval, 0, array.length - 1, 0, comparisons, true);
   let time = result.time;
   time = time + 1;
   finish(time, interval);
@@ -200,13 +224,14 @@ const partition = (array, low, high, time, comparisons, interval) => {
   let temp = array[i+1];
   array[i+1] = array[high];
   array[high] = temp;
+  finalize(i + 1, ++time, interval);
   let pivotIndex = i + 1;
   return {pivotIndex, time, comparisons};
 }
 
 const quickSortHelper = (array, low, high, time, comparisons, interval) => {
 
-  if (low < high) {
+  if (low <= high) {
     let partitionResult = partition(array, low, high, time, comparisons, interval);
     let result = quickSortHelper(array, low, partitionResult.pivotIndex - 1, partitionResult.time, partitionResult.comparisons, interval);
     let nextResult = quickSortHelper(array, partitionResult.pivotIndex + 1, high, result.time, result.comparisons, interval);
@@ -232,6 +257,56 @@ export const quickSort = (array, interval) => {
 }
 
 
+export const insertionSort = (array, interval) => {
+  let newArr = array.slice();
+  let time = 0;
+  let comparisons = 0;
+  for (let i = 1; i < newArr.length; i++) {
+    let j = i - 1;
+    let key = newArr[i];
+    while (j >= 0 && newArr[j] > key) {
+      setComparisons(++comparisons, ++time, interval);
+      modifyValue(j + 1, newArr[j], ++time, interval);
+      newArr[j + 1] = newArr[j];
+      j--;
+    }
+    modifyValue(j + 1, key, ++time, interval);
+    setColor(j + 1, ++time, interval, '#c60f7b');
+    newArr[j + 1] = key;
+  }
+  finish(++time, interval);
+  time = (time + 1) * interval + 500;
+  return {time, newArr};
+}
+
+export const selectionSort = (array, interval) => {
+  let newArr = array.slice();
+  let time = 0;
+  let comparisons = 0;
+  for (let i = 0; i < newArr.length - 1; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < newArr.length; j++) {
+      setComparisons(++comparisons, time, interval);
+      if (newArr[j] < newArr[minIndex]) {
+        compare([j, minIndex], false, ++time, interval);
+        time++;
+        minIndex = j;
+      }
+      else {
+        compare([j, minIndex], true, ++time, interval);
+        time++;
+      }
+    }
+    swap([i, minIndex], ++time, interval);
+    let temp = newArr[i];
+    newArr[i] = newArr[minIndex];
+    newArr[minIndex] = temp;
+    finalize(i, ++time, interval);
+  }
+  finish(++time, interval);
+  time = (time + 1) * interval + 500;
+  return {time, newArr};
+}
 
 
 //OLD VERSION

@@ -5,7 +5,7 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 
 import Sort from './Components/Sort'
 
-import { bubbleSort, mergeSort, heapSort, quickSort } from './Utility/sorting'
+import { bubbleSort, mergeSort, heapSort, quickSort, insertionSort, selectionSort } from './Utility/sorting'
 
 import { createNewArr, getInterval } from './Utility/functions'
 
@@ -37,6 +37,12 @@ function App() {
             </Route>
             <Route path="/heap-sort">
               <Sort context={ArrayContext} sortingAlgorithm={heapSort} name={'Heap Sort'}/>
+            </Route>
+            <Route path="/insertion-sort">
+              <Sort context={ArrayContext} sortingAlgorithm={insertionSort} name={'Insertion Sort'}/>
+            </Route>
+            <Route path="/selection-sort">
+              <Sort context={ArrayContext} sortingAlgorithm={selectionSort} name={'Selection Sort'}/>
             </Route>
           </Switch>
         </Router>
